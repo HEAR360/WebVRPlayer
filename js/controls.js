@@ -52,10 +52,10 @@ var curMouseEulerY = 0;
     mouseRotateRate: new Float32Array([0, 0, 0]),  // Vector, mouse-relative
 
     create: function() {
-      var eulerThree = new THREE.Euler( 0, 0, 0, 'XYZ' );
-      //var eulerThree = new THREE.Euler( 0, 3.14, 0, 'XYZ' );
-      var inversedEulerThree = new THREE.Euler( 0, 0, 0, 'XYZ' );
-      //var inversedEulerThree = new THREE.Euler( 0, -3.14, 0, 'XYZ' );
+      //var eulerThree = new THREE.Euler( 0, 0, 0, 'XYZ' );
+      var eulerThree = new THREE.Euler( 0, 3.14, 0, 'XYZ' );
+      //var inversedEulerThree = new THREE.Euler( 0, 0, 0, 'XYZ' );
+      var inversedEulerThree = new THREE.Euler( 0, -3.14, 0, 'XYZ' );
       //var eulerThree = new THREE.Euler( 0, 1.57, 0, 'XYZ' );
       var quaternionThree = new THREE.Quaternion();
       quaternionThree.setFromEuler(eulerThree);
