@@ -1,4 +1,43 @@
-eleVR Web Player
+Hear 360 Web VR Player with 8 Ball support
+================
+
+Hear 360 Web VR Player is based on open source project "eleVR Web Player", but is designed to play the VR video content with 8 channels' audio track recorded using Hear 360 8 Ball microphone.
+
+Controlling on PC or Mac:
+Use mouse left button to drag for camera rotation
+
+Controlling on Android:
+Panning around the phone to rotate the camera
+
+Hear 360 Web VR Player uses Webm container. The video track format supports VP8 or VP9, and the audio track format supports opus.
+
+The audio channels' order is:
+1, front perspective left
+2, front perspective right
+3, left perspective left
+4, left perspective right
+5, back perspective left
+6, back perspective right
+7, right perspective left
+8, right perspective right
+
+Hear 360 Web VR Player renders audio using HTML 5 Web audio API.
+
+Supported browsers:
+1, Chrome 49 or above (PC and Mac)
+2, Firefox 32 or above (PC and Mac)
+3, Chrome 4.2 (Android)
+
+On iOS, both Safari and Chrome are not supported, because Webm is not supported.
+
+For generating Hear 360 WebVR player compatible content, please use the script of "WebVR/convert" in "VRUtils" repository.
+
+To interleave the 8 channels' wav audio file that  script needed, please use the script of "WebVR/interleave" in "VRUtils" repository.
+
+This branch is the 2D version (1 scope)
+The 3D version is in "3D" branch (2 scopes, for Occlus or Google Cardboard)
+
+Original eleVR Web Player documentation
 ================
 
 The eleVR player lets you watch 360 flat and stereo video on your Oculus Rift or Android device with VR headset (Cardboard, Durovis Dive, etc.) from a web browser. It is written with js, html5, and webGL.
