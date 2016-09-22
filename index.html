@@ -98,6 +98,7 @@
 <link rel="stylesheet" href="css/font-awesome.css">
 <link rel="stylesheet" href="css/elevr-player.css">
 <script src="lib/gl-matrix.js" type="text/javascript"></script>
+<script src="lib/three.min.js" type="text/javascript"></script>
 <script src="lib/util.js" type="text/javascript"></script>
 <script src="js/controls.js" type="text/javascript"></script>
 <script src="js/player-webgl.js" type="text/javascript"></script>
@@ -109,27 +110,30 @@
 <body>
   <div id="video-container">
     <!-- Loading Message -->
-    <div id="left-load" class="left">
+    <div id="left-load" class="center">
       <div id="title-l" class="title">Loading Video...</div>
-      <div id="message-l" class="message hidden">Try WASD + Q/E</div>
+      <div id="message-l" class="message hidden"></div>
     </div>
-    <div id="right-load" class="right">
+    <!--<div id="right-load" class="right">
       <div id="title-r" class="title">Loading Video...</div>
       <div id="message-r" class="message hidden">Try WASD + Q/E</div>
-    </div>
-    <div id="left-play" class="left hidden">
+    </div>-->
+    <div id="left-play" class="center hidden">
       <a id="play-l" class="large-play fa fa-play fa-5x"></a>
     </div>
-    <div id="right-play" class="right hidden">
+    <!--<div id="right-play" class="right hidden">
       <a id="play-r" class="large-play fa fa-play fa-5x"></a>
-    </div>
+    </div>-->
 
     <canvas id="glcanvas">
       Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
     </canvas>
     <video class="hidden" preload="auto" id="video" loop="true" webkit-playsinline crossOrigin="anonymous">
-      <source src="therelaxatron2.mp4" type="video/mp4">
-      <source src="therelaxatron.webm" type="video/webm">
+      <source src="Hide_and_Seek_vp8_opus.webm" type="video/webm">
+      <source src="Boxing_vp8_opus.webm" type="video/webm">
+      <source src="Lazer.webm" type="video/webm">
+      <!-- <source src="therelaxatron2.mp4" type="video/mp4">
+      <source src="therelaxatron.webm" type="video/webm"> -->
     </video>
         <!-- Video Controls -->
         <div id="video-controls" class="hidden">
@@ -146,16 +150,19 @@
 
           <a id="select-local-file" class="fa fa-folder-open icon rfloat" title="Select File"></a>
 
-          <select id="projection-select" class="rfloat">
+          <select id="projection-select" class="rfloat" hidden="hidden">
             <option value=0>Equirectangular</option>
-            <option value=1>Equirectangular 3D</option>
+            <!-- <option value=1>Equirectangular 3D</option> -->
           </select>
 
           <select id="video-select" class="rfloat">
-            <option value="0therelaxatron2.mp4">The Relaxatron (mp4)</option>
+            <option value="0Hide_and_Seek_vp8_opus.webm">Hide and Seek (webm)</option>
+            <option value="0Boxing_vp8_opus.webm">Boxing (webm)</option>
+            <option value="0Lazer.webm">Lazer (webm)</option>
+            <!-- <option value="0therelaxatron2.mp4">The Relaxatron (mp4)</option>
             <option value="0therelaxatron.webm">The Relaxatron (webm)</option>
             <option value="1Vidcon5.mp4">Vidcon (mp4)</option>
-            <option value="1Vidcon.webm">Vidcon (webm)</option>
+            <option value="1Vidcon.webm">Vidcon (webm)</option> -->
           </select>
 
           <a id="full-screen" class="fa fa-expand icon rfloat" title="Full Screen"></a>

@@ -1,5 +1,6 @@
 var positionsBuffer, verticesIndexBuffer, texture;
 var vrHMD, vrSensor;
+var cameraEuler;
 
 /*jshint -W069 */
 
@@ -175,10 +176,33 @@ var vrHMD, vrSensor;
         } else {
           totalRotation = manualRotation;
         }
+        quat.multiply(totalRotation, initialRotation, totalRotation);
+        //console.log("CASE1");
         mat4.fromQuat(rotation, totalRotation);
       } else {
         quat.multiply(totalRotation, manualRotation, webGL.getPhoneVR().rotationQuat());
+
+        //quat.multiply(totalRotation, webGL.getPhoneVR().rotationQuat(), initialRotation);
+        //quat.multiply(totalRotation, manualRotation, totalRotation);
+        if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            // some code..
+            quat.multiply(totalRotation, mouseOrientationX, totalRotation);
+            quat.multiply(totalRotation, mouseOrientationY, totalRotation);
+        }
+        quat.multiply(totalRotation, initialRotation, totalRotation);
         mat4.fromQuat(rotation, totalRotation);
+        //mat4.multiply(mouseRotationMatrix, rotation, rotation);
+        //console.log("CASE2");
+      }
+
+      if(eye == 0)
+      {
+        //console.debug("QUAN:" + totalRotation[0] + ", " + totalRotation[1] + ", " + totalRotation[2] + ", " + totalRotation[3]);
+        var quaternion3 = new THREE.Quaternion(totalRotation[0], totalRotation[1], totalRotation[2], totalRotation[3]);
+        //console.debug("QUAN3:" + quaternion3.x + ", " + quaternion3.y + ", " + quaternion3.z + ", " + quaternion3.w);
+        var euler = new THREE.Euler().setFromQuaternion( quaternion3, 'XYZ' );
+        //console.debug("TR:" + euler.x + ", " + euler.y + ", " + euler.z);
+        cameraEuler = totalRotation;
       }
 
       var projectionInverse = mat4.create();
@@ -189,9 +213,10 @@ var vrHMD, vrSensor;
       webGL.gl.uniformMatrix4fv(shader.uniforms['proj_inv'], false, inv);
 
       if (eye === 0) { // left eye
-        webGL.gl.viewport(0, 0, canvas.width/2, canvas.height);
+        webGL.gl.viewport(0, 0, canvas.width, canvas.height);
+        //webGL.gl.viewport(0, 0, canvas.width/2, canvas.height);
       } else { // right eye
-        webGL.gl.viewport(canvas.width/2, 0, canvas.width/2, canvas.height);
+        //webGL.gl.viewport(canvas.width/2, 0, canvas.width/2, canvas.height);
       }
 
       // Draw
@@ -226,9 +251,30 @@ var vrHMD, vrSensor;
                                      controls.manualRotateRate[2] * interval, 1.0);
         quat.normalize(update, update);
         quat.multiply(manualRotation, manualRotation, update);
+/*
+        var mouseUpdate = quat.fromValues(controls.mouseRotateRate[0] * interval,
+                                     controls.mouseRotateRate[1] * interval,
+                                     controls.mouseRotateRate[2] * interval, 1.0);
+        quat.normalize(mouseUpdate, mouseUpdate);
+        quat.multiply(manualRotation, manualRotation, mouseUpdate);
+        */
       }
 
       var perspectiveMatrix = mat4.create();
+      if (typeof vrHMD !== 'undefined') {
+        var leftParams = vrHMD.getEyeParameters('left');
+        //var rightParams = vrHMD.getEyeParameters('right');
+        perspectiveMatrix = util.mat4PerspectiveFromVRFieldOfView(leftParams.recommendedFieldOfView, 0.1, 10);
+        webGL.drawOneEye(0, perspectiveMatrix);
+        //perspectiveMatrix = util.mat4PerspectiveFromVRFieldOfView(rightParams.recommendedFieldOfView, 0.1, 10);
+        //webGL.drawOneEye(1, perspectiveMatrix);
+      } else {
+        var ratio = (canvas.width)/canvas.height;
+        mat4.perspective(perspectiveMatrix, Math.PI/2, ratio, 0.1, 10);
+        webGL.drawOneEye(0, perspectiveMatrix);
+        //webGL.drawOneEye(1, perspectiveMatrix);
+      }
+      /*
       if (typeof vrHMD !== 'undefined') {
         var leftParams = vrHMD.getEyeParameters('left');
         var rightParams = vrHMD.getEyeParameters('right');
@@ -242,7 +288,7 @@ var vrHMD, vrSensor;
         webGL.drawOneEye(0, perspectiveMatrix);
         webGL.drawOneEye(1, perspectiveMatrix);
       }
-
+      */
 
       if (timing.showTiming) {
         webGL.gl.finish();
@@ -258,6 +304,8 @@ var vrHMD, vrSensor;
           timing.framesSinceIssue++;
         }
       }
+
+      controls.frameCB(cameraEuler);
 
       reqAnimFrameID = requestAnimationFrame(webGL.drawScene);
       timing.prevFrameTime = timing.frameTime;

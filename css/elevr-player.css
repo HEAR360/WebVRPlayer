@@ -75,6 +75,14 @@ a:active {
   z-index: 1;
 }
 
+.center {
+  width: 100%;
+  float: center;
+  position: relative;
+  top: 43%;
+  z-index: 1;
+}
+
 #glcanvas {
   position:absolute;
   top:0; bottom:0; right:0; left:0;
