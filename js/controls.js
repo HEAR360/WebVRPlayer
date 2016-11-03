@@ -133,8 +133,8 @@ var curMouseEulerY = 0;
       });
 
       videoSelect.addEventListener('change', function() {
-        projection = videoSelect.value[0];
-        projectionSelect.value = projection;
+        //projection = videoSelect.value[0];
+        //projectionSelect.value = projection;
 
         // Remove the hash/querystring if there were custom video parameters.
         window.history.pushState('', document.title, window.location.pathname);
@@ -297,6 +297,10 @@ var curMouseEulerY = 0;
         window.leftPlay.classList.remove('hidden');
         //window.rightPlay.classList.remove('hidden');
       }
+
+      //Update projection mode upon loaded
+      projection = videoSelect.value[0];
+      projectionSelect.value = projection;
 
       controls.initHPS(video);
     },
@@ -531,13 +535,13 @@ console.log("dest channel count:" + audioCtx.destination.channelCount);
       gainNodeFrontL.connect(merger, 0, 0);
       gainNodeFrontR.connect(merger, 0, 1);
 
-      //left
-      gainNodeLeftL.gain.value = 0;
-      gainNodeLeftR.gain.value = 0;
-      splitter.connect(gainNodeLeftL, 2, 0);  //1
-      splitter.connect(gainNodeLeftR, 3, 0);  //6
-      gainNodeLeftL.connect(merger, 0, 0);
-      gainNodeLeftR.connect(merger, 0, 1);
+      //right
+      gainNodeRightL.gain.value = 0;
+      gainNodeRightR.gain.value = 0;
+      splitter.connect(gainNodeRightL, 2, 0); //5
+      splitter.connect(gainNodeRightR, 3, 0); //3
+      gainNodeRightL.connect(merger, 0, 0);
+      gainNodeRightR.connect(merger, 0, 1);
 
       //back
       gainNodeBackL.gain.value = 0;
@@ -547,13 +551,13 @@ console.log("dest channel count:" + audioCtx.destination.channelCount);
       gainNodeBackL.connect(merger, 0, 0);
       gainNodeBackR.connect(merger, 0, 1);
 
-      //right
-      gainNodeRightL.gain.value = 1;
-      gainNodeRightR.gain.value = 1;
-      splitter.connect(gainNodeRightL, 6, 0); //5
-      splitter.connect(gainNodeRightR, 7, 0); //3
-      gainNodeRightL.connect(merger, 0, 0);
-      gainNodeRightR.connect(merger, 0, 1);
+      //left
+      gainNodeLeftL.gain.value = 0;
+      gainNodeLeftR.gain.value = 0;
+      splitter.connect(gainNodeLeftL, 5, 0);  //1
+      splitter.connect(gainNodeLeftR, 7, 0);  //6
+      gainNodeLeftL.connect(merger, 0, 0);
+      gainNodeLeftR.connect(merger, 0, 1);
 /*
       //Things got a little messy because Wave 7.1 channel order is:
 
